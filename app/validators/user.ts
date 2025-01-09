@@ -8,4 +8,10 @@ export const createUserValidator = z.object({
   role: z.nativeEnum(EUserRole),
 })
 
+export const updateUserValidator = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+})
+
 export type ICreateUserData = z.infer<typeof createUserValidator>
+export type IUpdateUserData = z.infer<typeof updateUserValidator>

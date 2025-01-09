@@ -1,7 +1,8 @@
-import User from '../Models/user.js'
+import User from '#models/user'
+import { ICreateUserData, IUpdateUserData } from '#validators/user'
 
 export class UserService {
-  async create(user: User) {
+  async create(user: ICreateUserData) {
     return await User.create(user)
   }
 
@@ -9,15 +10,11 @@ export class UserService {
     return await User.find(id)
   }
 
-  async findByEmail(email: string) {
-    return await User.findBy('email', email)
-  }
-
   async findAll() {
     return await User.all()
   }
 
-  async update(id: string, user: User) {
+  async update(id: string, user: IUpdateUserData) {
     return await User.query().where('id', id).update(user)
   }
 
