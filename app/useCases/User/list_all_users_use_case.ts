@@ -1,6 +1,7 @@
-import User from '../../models/user.js'
-import { UserService } from '#services/user_service'
 import { inject } from '@adonisjs/core'
+
+import User from '#models/user'
+import { UserService } from '#services/user_service'
 
 @inject()
 export class ListAllUsersUseCase {

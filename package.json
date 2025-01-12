@@ -29,6 +29,7 @@
     "#policies/*": "./app/policies/*.js",
     "#abilities/*": "./app/abilities/*.js",
     "#database/*": "./database/*.js",
+    "#enums/*": "./enums/*.js",
     "#start/*": "./start/*.js",
     "#tests/*": "./tests/*.js",
     "#config/*": "./config/*.js"

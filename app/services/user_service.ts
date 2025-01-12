@@ -7,7 +7,12 @@ export class UserService {
   }
 
   async findById(id: string) {
-    return await User.find(id)
+    const user = await User.find(id)
+
+    if (!user) {
+      throw new Error('User not found!')
+    }
+    return user
   }
 
   async findAll() {
@@ -15,7 +20,8 @@ export class UserService {
   }
 
   async update(id: string, user: IUpdateUserData) {
-    return await User.query().where('id', id).update(user)
+    const body = { ...user, updatedAt: new Date() }
+    return await User.query().where('id', id).update(body)
   }
 
   async delete(id: string) {
