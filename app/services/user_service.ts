@@ -1,20 +1,17 @@
 import User from '#models/user'
 import { ICreateUserData, IUpdateUserData } from '#validators/user'
-import { inject } from '@adonisjs/core'
 
-@inject()
 export class UserService {
   async create(user: ICreateUserData) {
     return await User.create(user)
   }
 
-  async findById(id: string) {
-    const user = await User.find(id)
+  async findByEmail(email: string) {
+    return await User.findBy('email', email)
+  }
 
-    if (!user) {
-      throw new Error('User not found!')
-    }
-    return user
+  async findById(id: string) {
+    return await User.find(id)
   }
 
   async findAll() {

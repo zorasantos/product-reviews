@@ -1,5 +1,5 @@
-import { HttpContext } from '@adonisjs/core/http'
+import type { HttpContext } from '@adonisjs/core/http'
 
-export interface TController<Request = HttpContext, Response = unknown> {
+export interface TController<Response = unknown> {
   handle(ctx: HttpContext): Promise<Response>
 }

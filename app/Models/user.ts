@@ -3,8 +3,9 @@ import uuid from 'node:crypto'
 import { DateTime } from 'luxon'
 import { BaseModel, column, beforeCreate, beforeSave } from '@adonisjs/lucid/orm'
 
-import hash from '@adonisjs/core/services/hash'
 import { EUserRole } from '../enums/user_role.js'
+import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
+import { EncryptAdapter } from '../adapters/cryptography/encrypt_adapter.js'
 
 export default class User extends BaseModel {
   public static table = 'users'
@@ -41,7 +42,16 @@ export default class User extends BaseModel {
   @beforeSave()
   public static async hashPassword(user: User) {
     if (user.$dirty.password) {
-      user.password = await hash.make(user.password)
+      const encryptAdapter = new EncryptAdapter()
+      user.password = await encryptAdapter.make(user.password)
     }
   }
+
+  static accessTokens = DbAccessTokensProvider.forModel(User, {
+    expiresIn: '1 minute',
+    prefix: 'oat_',
+    table: 'auth_access_tokens',
+    type: 'auth_token',
+    tokenSecretLength: 40,
+  })
 }

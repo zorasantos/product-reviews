@@ -1,8 +1,6 @@
 import Product from '#models/product'
 import { ICreateProductData, IUpdateProductData } from '#validators/product'
-import { inject } from '@adonisjs/core'
 
-@inject()
 export class ProductService {
   async create(data: ICreateProductData) {
     return await Product.create(data)
