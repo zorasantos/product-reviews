@@ -7,9 +7,7 @@ import { IUpdateProductData } from '#validators/product'
 export class UpdateProductUseCase {
   constructor(private readonly productService: ProductService) {}
 
-  async execute(id: string, body: IUpdateProductData): Promise<{ message: string }> {
+  async execute(id: string, body: IUpdateProductData) {
     await this.productService.update(id, body)
-
-    return { message: `Product updated successfully` }
   }
 }

@@ -7,9 +7,7 @@ import { UserService } from '#services/user_service'
 export class UpdateUserUseCase {
   constructor(private readonly userService: UserService) {}
 
-  async execute(id: string, body: IUpdateUserData): Promise<{ message: string }> {
+  async execute(id: string, body: IUpdateUserData) {
     await this.userService.update(id, body)
-
-    return { message: `User updated successfully` }
   }
 }

@@ -1,34 +1,27 @@
 import uuid from 'node:crypto'
 import { DateTime } from 'luxon'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import { BaseModel, column, beforeCreate, belongsTo } from '@adonisjs/lucid/orm'
-
+import Product from './product.js'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import User from './user.js'
-import { EProductStatus } from '../enums/product_status.js'
 
-export default class Product extends BaseModel {
-  public static table = 'products'
+export default class Review extends BaseModel {
+  public static table = 'reviews'
 
   @column({ isPrimary: true })
   declare id: uuid.UUID
 
   @column()
-  declare name: string
+  declare product_id: uuid.UUID
 
   @column()
   declare user_id: uuid.UUID
 
   @column()
-  declare description: string
+  declare comment: string
 
   @column()
-  declare price: number
-
-  @column()
-  declare status: EProductStatus
-
-  @column()
-  declare image_url: string
+  declare rating: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -40,9 +33,14 @@ export default class Product extends BaseModel {
   declare deletedAt: DateTime
 
   @beforeCreate()
-  public static assignUuid(product: Product) {
-    product.id = uuid.randomUUID()
+  public static assignUuid(review: Review) {
+    review.id = uuid.randomUUID()
   }
+
+  @belongsTo(() => Product, {
+    foreignKey: 'product_id',
+  })
+  declare product: BelongsTo<typeof Product>
 
   @belongsTo(() => User, {
     foreignKey: 'user_id',

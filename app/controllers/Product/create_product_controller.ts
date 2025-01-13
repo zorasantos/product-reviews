@@ -1,7 +1,6 @@
 import { inject } from '@adonisjs/core'
 
-import Product from '#models/product'
-import { HttpRequest } from '#protocols/http'
+import { THttpContext } from '#protocols/http'
 import { TController } from '#protocols/controller'
 import { createProductValidator } from '#validators/product'
 import { CreateProductUseCase } from '#useCases/Product/create_product_use_case'
@@ -10,12 +9,12 @@ import { CreateProductUseCase } from '#useCases/Product/create_product_use_case'
 export default class CreateProductController implements TController {
   constructor(private readonly useCase: CreateProductUseCase) {}
 
-  async handle({ request }: HttpRequest): Promise<Product> {
+  async handle({ request, response }: THttpContext) {
     const product = request.only(['name', 'description', 'price', 'status', 'image_url'])
     const payload = createProductValidator.parse(product)
 
-    const response = await this.useCase.execute(payload)
+    const result = await this.useCase.execute(payload)
 
-    return response
+    return response.status(201).send(result)
   }
 }

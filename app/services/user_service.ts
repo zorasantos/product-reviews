@@ -1,6 +1,8 @@
 import User from '#models/user'
 import { ICreateUserData, IUpdateUserData } from '#validators/user'
+import { inject } from '@adonisjs/core'
 
+@inject()
 export class UserService {
   async create(user: ICreateUserData) {
     return await User.create(user)

@@ -1,17 +1,23 @@
 import { inject } from '@adonisjs/core'
 
-import User from '#models/user'
+import { THttpContext } from '#protocols/http'
 import { TController } from '#protocols/controller'
 import { GetUserByIdUseCase } from '#useCases/User/get_user_by_id_use_case'
-import { HttpRequest } from '#protocols/http'
 
 @inject()
 export default class GetUserByIdController implements TController {
   constructor(private readonly useCase: GetUserByIdUseCase) {}
 
-  async handle({ params }: HttpRequest): Promise<User | null> {
+  async handle({ params, response }: THttpContext) {
     const { id } = params
-    const response = await this.useCase.execute(id)
-    return response
+    const result = await this.useCase.execute(id)
+
+    if (!result) {
+      // O erro não esta entrando no if
+      console.log('Deu erro cara')
+      return response.status(404).send({ message: 'User not found' })
+    }
+
+    return response.status(200).send(result)
   }
 }
